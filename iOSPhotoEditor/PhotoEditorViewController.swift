@@ -39,6 +39,18 @@ public final class PhotoEditorViewController: UIViewController {
     @IBOutlet weak var shareButton: UIButton!
     @IBOutlet weak var clearButton: UIButton!
     
+    //Caption text view and send button
+//    @IBOutlet weak var viewSendText: UIView!
+//    @IBOutlet weak var captionTextView: UITextView!
+//    @IBOutlet weak var btnSend: UIButton!
+//    @IBOutlet weak var heightConstraintCaptionTextView: NSLayoutConstraint!
+//    @IBOutlet weak var bottomConstarintTextView: NSLayoutConstraint!
+//    public var imageNameButtonSend = ""
+//    public var textViewDefaultHeight = 35.0
+//    public var textViewMaxHeight = 75.0
+//    public var placeHoldeTextForCaption = "Add a caption..."
+    
+    
     public var image: UIImage?
     /**
      Array of Stickers -UIImage- that the user will choose from
