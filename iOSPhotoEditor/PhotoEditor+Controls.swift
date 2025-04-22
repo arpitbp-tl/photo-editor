@@ -18,6 +18,8 @@ public enum control {
     case save
     case share
     case clear
+    case send
+    case btnContinue
 }
 
 extension PhotoEditorViewController {
@@ -45,6 +47,27 @@ extension PhotoEditorViewController {
         isDrawing = true
         canvasImageView.isUserInteractionEnabled = false
         doneButton.isHidden = false
+        /*
+            Case
+            1. Keyboard is shown
+              1.1 Is caption text view is shown
+              1.2 Caption text view is shown
+         */
+
+//        if isKeyboardVisible {
+//            //Already is been set in keyboard will change height
+//            if self.bottomConstarintTextView.constant > 200.0 {
+//                //Caption text view is active
+//                self.colorPickerViewBottomConstraint?.constant = self.bottomConstarintTextView.constant + captionTextView.frame.height + 8.0
+//            } else {
+//                //It is been set in keyboard will change frame method
+////                self.colorPickerViewBottomConstraint?.constant = defaultBottomSpaceTextView + captionTextView.frame.height + 8.0
+//            }
+//        } else {
+//            self.colorPickerViewBottomConstraint?.constant = defaultBottomSpaceTextView + captionTextView.frame.height + 8.0
+//        }
+
+    
         colorPickerView.isHidden = false
         hideToolbar(hide: true)
     }
@@ -132,6 +155,10 @@ extension PhotoEditorViewController {
                 stickerButton.isHidden = true
             case .text:
                 stickerButton.isHidden = true
+            case .send:
+                viewSendText.isHidden = true
+            case .btnContinue:
+                btnContinue.isHidden = true
             }
         }
     }

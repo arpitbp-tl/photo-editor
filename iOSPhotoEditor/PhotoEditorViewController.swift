@@ -38,17 +38,19 @@ public final class PhotoEditorViewController: UIViewController {
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var shareButton: UIButton!
     @IBOutlet weak var clearButton: UIButton!
+    @IBOutlet weak var btnContinue: UIButton!
     
     //Caption text view and send button
-//    @IBOutlet weak var viewSendText: UIView!
-//    @IBOutlet weak var captionTextView: UITextView!
-//    @IBOutlet weak var btnSend: UIButton!
-//    @IBOutlet weak var heightConstraintCaptionTextView: NSLayoutConstraint!
-//    @IBOutlet weak var bottomConstarintTextView: NSLayoutConstraint!
-//    public var imageNameButtonSend = ""
-//    public var textViewDefaultHeight = 35.0
-//    public var textViewMaxHeight = 75.0
-//    public var placeHoldeTextForCaption = "Add a caption..."
+    @IBOutlet weak var viewSendText: UIView!
+    @IBOutlet weak var captionTextView: UITextView!
+    @IBOutlet weak var btnSend: UIButton!
+    @IBOutlet weak var heightConstraintCaptionTextView: NSLayoutConstraint!
+    @IBOutlet weak var bottomConstarintTextView: NSLayoutConstraint!
+    public var imageNameButtonSend = ""
+    public var textViewDefaultHeight = 35.0
+    public var textViewMaxHeight = 75.0
+    public var defaultBottomSpaceTextView = 50.0
+    public var placeHoldeTextForCaption = "Add a caption..."
     
     
     public var image: UIImage?
@@ -80,6 +82,7 @@ public final class PhotoEditorViewController: UIViewController {
     var activeTextView: UITextView?
     var imageViewToPan: UIImageView?
     var isTyping: Bool = false
+    var isKeyboardVisible = false
     
     
     var stickersViewController: StickersViewController!
@@ -94,6 +97,16 @@ public final class PhotoEditorViewController: UIViewController {
         super.viewDidLoad()
         self.setImageView(image: image!)
         
+        btnSend.setImage(UIImage(named: imageNameButtonSend), for: .normal)
+        captionTextView.autocorrectionType = .no
+        captionTextView.spellCheckingType = .no
+//      captionTextView.smartInsertDeleteType = .no
+        captionTextView.text = placeHoldeTextForCaption
+        captionTextView.textColor = .lightGray
+        heightConstraintCaptionTextView.constant = textViewDefaultHeight
+        self.bottomConstarintTextView.constant = defaultBottomSpaceTextView
+        self.colorPickerViewBottomConstraint.constant = defaultBottomSpaceTextView + captionTextView.frame.height
+        
         deleteView.layer.cornerRadius = deleteView.bounds.height / 2
         deleteView.layer.borderWidth = 2.0
         deleteView.layer.borderColor = UIColor.white.cgColor
@@ -104,6 +117,8 @@ public final class PhotoEditorViewController: UIViewController {
         edgePan.delegate = self
         self.view.addGestureRecognizer(edgePan)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)),
+                                               name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow),
                                                name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide),
@@ -115,6 +130,16 @@ public final class PhotoEditorViewController: UIViewController {
         configureCollectionView()
         stickersViewController = StickersViewController(nibName: "StickersViewController", bundle: Bundle(for: StickersViewController.self))
         hideControls()
+    }
+    public override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        print(#function)
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    deinit {
+        print("deinit")
+        NotificationCenter.default.removeObserver(self)
     }
     
     func configureCollectionView() {
@@ -137,6 +162,7 @@ public final class PhotoEditorViewController: UIViewController {
             forCellWithReuseIdentifier: "ColorCollectionViewCell")
     }
     
+    
     func setImageView(image: UIImage) {
         imageView.image = image
         let size = image.suitableSize(widthLimit: UIScreen.main.bounds.width)
@@ -148,6 +174,13 @@ public final class PhotoEditorViewController: UIViewController {
         topGradient.isHidden = hide
         bottomToolbar.isHidden = hide
         bottomGradient.isHidden = hide
+    }
+    
+    @IBAction func sendCaptionTextButtonTapped(_ sender: Any) {
+        let img = self.canvasView.toImage()
+        self.photoEditorDelegate?.doneEditing(image: img,
+                                              captionText: captionTextView.text ?? "")
+        self.dismiss(animated: true, completion: nil)
     }
 }
 

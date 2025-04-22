@@ -23,6 +23,11 @@ public protocol PhotoEditorDelegate {
      StickersViewController did Disappear
      */
     func canceledEditing()
+    /**
+       Edited image with caption text
+     */
+    func doneEditing(image: UIImage,
+                     captionText: String)
 }
 
 

@@ -163,6 +163,7 @@ extension PhotoEditorViewController : UIGestureRecognizerDelegate  {
 
     func moveView(view: UIView, recognizer: UIPanGestureRecognizer)  {
         
+    
         hideToolbar(hide: true)
         deleteView.isHidden = false
         
@@ -200,7 +201,7 @@ extension PhotoEditorViewController : UIGestureRecognizerDelegate  {
         if recognizer.state == .ended {
             imageViewToPan = nil
             lastPanPoint = nil
-            hideToolbar(hide: false)
+            hideToolbar(hide: isTyping ? true : false)
             deleteView.isHidden = true
             let point = recognizer.location(in: self.view)
             
