@@ -83,7 +83,8 @@ public final class PhotoEditorViewController: UIViewController {
     var imageViewToPan: UIImageView?
     var isTyping: Bool = false
     var isKeyboardVisible = false
-    
+    var isImageEditing: Bool = false
+
     
     var stickersViewController: StickersViewController!
 

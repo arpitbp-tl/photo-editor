@@ -35,45 +35,28 @@ extension PhotoEditorViewController {
         let controller = CropViewController()
         controller.delegate = self
         controller.image = image
+        self.isImageEditing = true
         let navController = UINavigationController(rootViewController: controller)
         present(navController, animated: true, completion: nil)
     }
 
     @IBAction func stickersButtonTapped(_ sender: Any) {
+        self.isImageEditing = true
         addStickersViewController()
     }
 
     @IBAction func drawButtonTapped(_ sender: Any) {
+        self.isImageEditing = true
         isDrawing = true
         canvasImageView.isUserInteractionEnabled = false
         doneButton.isHidden = false
-        /*
-            Case
-            1. Keyboard is shown
-              1.1 Is caption text view is shown
-              1.2 Caption text view is shown
-         */
-
-//        if isKeyboardVisible {
-//            //Already is been set in keyboard will change height
-//            if self.bottomConstarintTextView.constant > 200.0 {
-//                //Caption text view is active
-//                self.colorPickerViewBottomConstraint?.constant = self.bottomConstarintTextView.constant + captionTextView.frame.height + 8.0
-//            } else {
-//                //It is been set in keyboard will change frame method
-////                self.colorPickerViewBottomConstraint?.constant = defaultBottomSpaceTextView + captionTextView.frame.height + 8.0
-//            }
-//        } else {
-//            self.colorPickerViewBottomConstraint?.constant = defaultBottomSpaceTextView + captionTextView.frame.height + 8.0
-//        }
-
-    
         colorPickerView.isHidden = false
         hideToolbar(hide: true)
     }
 
     @IBAction func textButtonTapped(_ sender: Any) {
         isTyping = true
+        self.isImageEditing = true
         let textView = UITextView(frame: CGRect(x: 0, y: canvasImageView.center.y,
                                                 width: UIScreen.main.bounds.width, height: 30))
         
@@ -125,7 +108,7 @@ extension PhotoEditorViewController {
     
     @IBAction func continueButtonPressed(_ sender: Any) {
         let img = self.canvasView.toImage()
-        photoEditorDelegate?.doneEditing(image: img)
+        photoEditorDelegate?.doneEditing(image: img, isImageEditing: self.isImageEditing)
         self.dismiss(animated: true, completion: nil)
     }
 
@@ -140,7 +123,6 @@ extension PhotoEditorViewController {
     func hideControls() {
         for control in hiddenControls {
             switch control {
-                
             case .clear:
                 clearButton.isHidden = true
             case .crop:
@@ -162,5 +144,4 @@ extension PhotoEditorViewController {
             }
         }
     }
-    
 }
