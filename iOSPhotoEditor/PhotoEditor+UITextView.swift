@@ -34,6 +34,7 @@ extension PhotoEditorViewController: UITextViewDelegate {
     
     public func updateTextViewHeight(height: CGFloat) {
        heightConstraintCaptionTextView.constant = max(textViewDefaultHeight, height)
+       colorPickerViewBottomConstraint.constant = self.bottomConstarintTextView.constant + height
        view.layoutIfNeeded()
     }
     
